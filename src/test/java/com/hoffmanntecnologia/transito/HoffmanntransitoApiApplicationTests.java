@@ -1,4 +1,4 @@
-package com.hoffmanntecnologia.hoffmanntransito.hoffmanntransitoapi;
+package com.hoffmanntecnologia.transito;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

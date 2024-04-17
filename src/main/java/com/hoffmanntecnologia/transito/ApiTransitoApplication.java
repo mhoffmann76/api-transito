@@ -1,13 +1,13 @@
-package com.hoffmanntecnologia.hoffmanntransito.hoffmanntransitoapi;
+package com.hoffmanntecnologia.transito;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class HoffmanntransitoApiApplication {
+public class ApiTransitoApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(HoffmanntransitoApiApplication.class, args);
+		SpringApplication.run(ApiTransitoApplication.class, args);
 	}
 
 }
