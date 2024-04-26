@@ -2,6 +2,7 @@ package com.hoffmanntecnologia.transito.api.controller;
 
 import com.hoffmanntecnologia.transito.domain.exception.NegocioException;
 import com.hoffmanntecnologia.transito.domain.model.Proprietario;
+import com.hoffmanntecnologia.transito.domain.model.Veiculo;
 import com.hoffmanntecnologia.transito.domain.repository.ProprietarioRepository;
 import com.hoffmanntecnologia.transito.domain.service.RegistroProprietarioService;
 import jakarta.persistence.EntityManager;
@@ -24,6 +25,7 @@ public class ProprietarioController {
 
     private RegistroProprietarioService registroProprietarioService;
     private ProprietarioRepository proprietarioRepository;
+
 
 
     @GetMapping

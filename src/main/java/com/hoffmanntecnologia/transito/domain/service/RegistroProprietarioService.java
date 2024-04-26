@@ -3,6 +3,7 @@ package com.hoffmanntecnologia.transito.domain.service;
 import com.hoffmanntecnologia.transito.domain.exception.NegocioException;
 import com.hoffmanntecnologia.transito.domain.model.Proprietario;
 import com.hoffmanntecnologia.transito.domain.repository.ProprietarioRepository;
+import com.hoffmanntecnologia.transito.domain.repository.VeiculoReporitory;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class RegistroProprietarioService {
 
     private final ProprietarioRepository proprietarioRepository;
+
 
     @Transactional
     public Proprietario salvar(Proprietario proprietario){
@@ -30,6 +32,14 @@ public class RegistroProprietarioService {
     @Transactional
     public void excluir(Long id){
         proprietarioRepository.deleteById(id);
+    }
+
+
+    public Proprietario buscar(Long id){
+        return proprietarioRepository.findById(id)
+                .orElseThrow(() -> new NegocioException("Proprietario não encontrado"));
+
+
     }
 
 
