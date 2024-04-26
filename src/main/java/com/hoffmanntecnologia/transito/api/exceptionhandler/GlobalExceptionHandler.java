@@ -1,5 +1,6 @@
-package com.hoffmanntecnologia.transito.domain.exception;
+package com.hoffmanntecnologia.transito.api.exceptionhandler;
 
+import com.hoffmanntecnologia.transito.domain.exception.NegocioException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
