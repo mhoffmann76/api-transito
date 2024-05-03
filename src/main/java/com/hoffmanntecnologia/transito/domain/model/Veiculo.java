@@ -1,21 +1,16 @@
 package com.hoffmanntecnologia.transito.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hoffmanntecnologia.transito.domain.StatusVeiculo;
-import com.hoffmanntecnologia.transito.domain.validation.ValidationGroups;
+import com.hoffmanntecnologia.transito.domain.exception.NegocioException;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.groups.ConvertGroup;
-import jakarta.validation.groups.Default;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -29,30 +24,62 @@ public class Veiculo {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @Valid
-    @ConvertGroup(from = Default.class, to = ValidationGroups.ProprietarioId.class)
-    @NotNull
     @ManyToOne
     private Proprietario proprietario;
 
-    @NotBlank
     private String marca;
-
-    @NotBlank
     private String modelo;
-
-    @NotBlank
-    @Pattern(regexp = "[A-Z]{3}[0-9][0-9A-Z][0-9]{2}")
     private String placa;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Enumerated(EnumType.STRING)
     private StatusVeiculo status;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private OffsetDateTime dataCadastro;
-
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private OffsetDateTime dataApreensao;
+
+    @OneToMany(mappedBy = "veiculo", cascade = CascadeType.ALL)
+    private List<Autuacao> autuacoes = new ArrayList<>();
+
+    public Autuacao adicionarAutuacao(Autuacao autuacao) {
+        autuacao.setDataOcorrencia(OffsetDateTime.now());
+        autuacao.setVeiculo(this);
+        getAutuacoes().add(autuacao);
+        return autuacao;
+    }
+
+    public void apreender() {
+
+        if (estaAprendido()) {
+            throw new NegocioException("Veiculo já se encontra apreendido");
+        } else {
+            setStatus(StatusVeiculo.APRRENDIDO);
+            setDataApreensao(OffsetDateTime.now());
+        }
+
+
+    }
+
+    @Transactional
+    public void removerApreensao() {
+        if (naoEstaApreendido()) {
+            throw new NegocioException("Veiculo não esta apreendido");
+        } else {
+            setStatus(StatusVeiculo.REGULAR);
+            setDataApreensao(null);
+        }
+
+
+    }
+
+
+    public boolean estaAprendido() {
+        return StatusVeiculo.APRRENDIDO.equals(getStatus());
+
+    }
+
+    public boolean naoEstaApreendido() {
+        return StatusVeiculo.REGULAR.equals(getStatus());
+    }
+
 
 }

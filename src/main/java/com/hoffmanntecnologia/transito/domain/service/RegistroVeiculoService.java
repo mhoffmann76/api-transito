@@ -1,6 +1,7 @@
 package com.hoffmanntecnologia.transito.domain.service;
 
 import com.hoffmanntecnologia.transito.domain.StatusVeiculo;
+import com.hoffmanntecnologia.transito.domain.exception.EntidadeNaoEcontradaException;
 import com.hoffmanntecnologia.transito.domain.exception.NegocioException;
 import com.hoffmanntecnologia.transito.domain.model.Proprietario;
 import com.hoffmanntecnologia.transito.domain.model.Veiculo;
@@ -18,6 +19,12 @@ import java.time.OffsetDateTime;
 public class RegistroVeiculoService {
     private final VeiculoReporitory veiculoReporitory;
     private final RegistroProprietarioService registroProprietarioService;
+
+
+    public Veiculo buscar (Long veiculoId){
+        return veiculoReporitory.findById(veiculoId)
+                .orElseThrow(() -> new EntidadeNaoEcontradaException("Veiculo não encontrado"));
+    }
 
     @Transactional
     public Veiculo cadastrar(Veiculo novoVeiculo) {

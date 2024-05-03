@@ -3,7 +3,7 @@ package com.hoffmanntecnologia.transito.domain.service;
 import com.hoffmanntecnologia.transito.domain.exception.NegocioException;
 import com.hoffmanntecnologia.transito.domain.model.Proprietario;
 import com.hoffmanntecnologia.transito.domain.repository.ProprietarioRepository;
-import com.hoffmanntecnologia.transito.domain.repository.VeiculoReporitory;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +16,7 @@ public class RegistroProprietarioService {
 
 
     @Transactional
-    public Proprietario salvar(Proprietario proprietario){
+    public Proprietario salvar(@Valid Proprietario proprietario){
         boolean emailEmUso = proprietarioRepository.findByEmail(proprietario.getEmail())
                 .filter(p -> !p.equals(proprietario))
                 .isPresent();

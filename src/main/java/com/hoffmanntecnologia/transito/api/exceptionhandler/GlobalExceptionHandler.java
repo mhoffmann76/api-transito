@@ -1,5 +1,6 @@
 package com.hoffmanntecnologia.transito.api.exceptionhandler;
 
+import com.hoffmanntecnologia.transito.domain.exception.EntidadeNaoEcontradaException;
 import com.hoffmanntecnologia.transito.domain.exception.NegocioException;
 import lombok.AllArgsConstructor;
 import org.hibernate.query.sql.spi.ParameterOccurrence;
@@ -44,6 +45,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(NegocioException.class)
     public ProblemDetail handleNegocio (NegocioException e){
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        problemDetail.setTitle(e.getMessage());
+        return problemDetail;
+    }
+
+
+
+    @ExceptionHandler(EntidadeNaoEcontradaException.class)
+    public ProblemDetail handleEntidadeNaoEncontrada (EntidadeNaoEcontradaException e){
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
         problemDetail.setTitle(e.getMessage());
         return problemDetail;

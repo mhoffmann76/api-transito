@@ -1,5 +1,10 @@
 package com.hoffmanntecnologia.transito.api.controller;
 
+import com.hoffmanntecnologia.transito.api.assembler.ProprietarioAssembler;
+import com.hoffmanntecnologia.transito.api.model.ProprietarioModel;
+import com.hoffmanntecnologia.transito.api.model.VeiculoModel;
+import com.hoffmanntecnologia.transito.api.model.input.ProprietarioInput;
+import com.hoffmanntecnologia.transito.api.model.input.VeiculoInput;
 import com.hoffmanntecnologia.transito.domain.exception.NegocioException;
 import com.hoffmanntecnologia.transito.domain.model.Proprietario;
 import com.hoffmanntecnologia.transito.domain.model.Veiculo;
@@ -25,31 +30,41 @@ public class ProprietarioController {
 
     private RegistroProprietarioService registroProprietarioService;
     private ProprietarioRepository proprietarioRepository;
+    private ProprietarioAssembler proprietarioAssembler;
+
+
+
+
 
 
 
     @GetMapping
-    public List<Proprietario> listar() {
-        return proprietarioRepository.findAll();
+    public List<ProprietarioModel> listar() {
+        return proprietarioAssembler.toCollectionModel(proprietarioRepository.findAll());
 
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Proprietario> buscar(@PathVariable Long id) {
+    public ResponseEntity<ProprietarioModel> buscar(@PathVariable Long id) {
         return proprietarioRepository.findById(id)
-                .map(proprietario -> ResponseEntity.ok(proprietario))
+                .map(proprietarioAssembler::toModel)
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
 
 
     }
 
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Proprietario Adicionar(@Valid @RequestBody Proprietario proprietario) {
-        return registroProprietarioService.salvar(proprietario);
-
+    public ProprietarioModel cadastrar(@Valid @RequestBody ProprietarioInput proprietarioInput){
+        Proprietario novoProprietario = proprietarioAssembler.toEntity(proprietarioInput);
+        Proprietario proprietarioCadastrado = registroProprietarioService.salvar(novoProprietario);
+        return proprietarioAssembler.toModel(proprietarioCadastrado);
 
     }
+
+
 
     @PutMapping("/{id}")
     public ResponseEntity<Proprietario> atualizar(@PathVariable Long id,
