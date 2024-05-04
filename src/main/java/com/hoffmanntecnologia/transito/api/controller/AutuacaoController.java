@@ -16,14 +16,14 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/veiculos/{veiculoId}/autuacoes")
+@RequestMapping("/veiculos/{veiculoId}")
 public class AutuacaoController {
 
     private final AutuacaoAssembler autuacaoAssembler;
     private final RegistroAutuacaoService registroAutuacaoService;
     private final RegistroVeiculoService  registroVeiculoService;
 
-    @PostMapping
+    @PostMapping("/autuar")
     @ResponseStatus(HttpStatus.CREATED)
     public AutuacaoModel registrar(@PathVariable Long veiculoId,
                                    @Valid @RequestBody AutuacaoInput autuacaoInput) {
@@ -33,7 +33,7 @@ public class AutuacaoController {
         return autuacaoAssembler.toModel(autuacaoRegistrada);
     }
 
-    @GetMapping
+    @GetMapping("/consultar")
     public List<AutuacaoModel> listar(@PathVariable Long veiculoId) {
         Veiculo veiculo = registroVeiculoService.buscar(veiculoId);
         return autuacaoAssembler.toCollectionModel(veiculo.getAutuacoes());

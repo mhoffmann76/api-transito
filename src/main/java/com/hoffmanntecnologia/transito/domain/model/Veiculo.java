@@ -56,7 +56,6 @@ public class Veiculo {
             setDataApreensao(OffsetDateTime.now());
         }
 
-
     }
 
     @Transactional
@@ -67,7 +66,6 @@ public class Veiculo {
             setStatus(StatusVeiculo.REGULAR);
             setDataApreensao(null);
         }
-
 
     }
 
@@ -80,6 +78,5 @@ public class Veiculo {
     public boolean naoEstaApreendido() {
         return StatusVeiculo.REGULAR.equals(getStatus());
     }
-
 
 }

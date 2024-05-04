@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.*;
 public class StatusVeiculoController {
     private final ApreensaoVeiculosService apreensaoVeiculosService;
 
-    @PutMapping("/{veiculoId}/apreensao")
+    @PutMapping("/{veiculoId}/apreender")
     public void apreender(@PathVariable Long veiculoId) {
         apreensaoVeiculosService.apreender(veiculoId);
     }
 
-    @DeleteMapping("{veiculoId}/apreensao")
+    @DeleteMapping("{veiculoId}/liberar")
 
     public void removerApreensao(@PathVariable Long veiculoId) {
         apreensaoVeiculosService.removerApreensao(veiculoId);
